@@ -1,0 +1,10 @@
+# Vagrant
+.vagrant/
+*.box
+
+# Ansible
+*.retry
+.vault_pass*
+
+# Other
+*.log
