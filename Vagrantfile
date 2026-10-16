@@ -17,6 +17,9 @@ MACHINES = {
   "mon01" => {ip: "#{NET}.13", memory: 2048, cpus: 2}
 }
 
+# We create the "IP NAME" lines for the /etc/hosts file
+HOSTS_ARGS = MACHINES.map{|name, options| "#{options[:ip]} #{name}"}
+
 # Begin Vagrant configuration
 Vagrant.configure("2") do |config|
   config.vm.box = BOX
@@ -33,6 +36,10 @@ Vagrant.configure("2") do |config|
         vb.memory = options[:memory]
         vb.cpus = options[:cpus]
         vb.linked_clone = true # Creates a base extra VM, but saves memory and speed
+      
+      # Provision to allow the nodes to reach each other by their names including each other in /etc/hosts
+      node.vm.provision "shell", name: "Hosts script", path:"vagrant/setup-hosts.sh", args: HOSTS_ARGS
+
 
       end
     end
