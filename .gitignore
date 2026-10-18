@@ -1,6 +1,7 @@
 # Vagrant
 .vagrant/
 *.box
+.shared/
 
 # Ansible
 *.retry

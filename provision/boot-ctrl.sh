@@ -14,5 +14,5 @@ if [[ ! -f "$KEY" ]]; then
 fi
 
 # Copy Ctrl node SSH public key to shared folder (auto created by vagrant)
-mkdir -p "/vagrant/shared"
+mkdir -p "/vagrant/.shared"
 cp "$KEY".pub "/vagrant/shared/control.pub"
