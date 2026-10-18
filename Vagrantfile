@@ -11,10 +11,10 @@
 BOX = "bento/rockylinux-9"
 NET = "192.168.56"
 MACHINES = {
-  "ctrl01" => {ip: "#{NET}.10", memory: 1024, cpus: 1},
   "db01" => {ip: "#{NET}.11", memory: 1024, cpus: 1},
   "web01" => {ip: "#{NET}.12", memory: 2048, cpus: 2},
   "mon01" => {ip: "#{NET}.13", memory: 2048, cpus: 2}
+  "ctrl01" => {ip: "#{NET}.10", memory: 1024, cpus: 1, control: true},
 }
 
 # We create the "IP NAME" lines for the /etc/hosts file
@@ -38,8 +38,10 @@ Vagrant.configure("2") do |config|
         vb.linked_clone = true # Creates a base extra VM, but saves memory and speed
       
       # Provision to allow the nodes to reach each other by their names including each other in /etc/hosts
-      node.vm.provision "shell", name: "Hosts script", path:"vagrant/setup-hosts.sh", args: HOSTS_ARGS
+      node.vm.provision "shell", name: "Add hosts to /etc/hosts", path:"vagrant/setup-hosts.sh", args: HOSTS_ARGS
 
+      if options[:control]
+        node.vm.provision "shell", name: "Ctrl node setup Ansible & SSH", path: "vagrant/boot-ctrl.sh"
 
       end
     end
