@@ -11,10 +11,10 @@
 BOX = "bento/rockylinux-9"
 NET = "192.168.56"
 MACHINES = {
+  "ctrl01" => {ip: "#{NET}.10", memory: 1024, cpus: 1, control: true},
   "db01" => {ip: "#{NET}.11", memory: 1024, cpus: 1},
   "web01" => {ip: "#{NET}.12", memory: 2048, cpus: 2},
   "mon01" => {ip: "#{NET}.13", memory: 2048, cpus: 2}
-  "ctrl01" => {ip: "#{NET}.10", memory: 1024, cpus: 1, control: true},
 }
 
 # We create the "IP NAME" lines for the /etc/hosts file
@@ -42,6 +42,8 @@ Vagrant.configure("2") do |config|
 
       if options[:control]
         node.vm.provision "shell", name: "Ctrl node setup Ansible & SSH", path: "provision/boot-ctrl.sh"
+      else
+        node.vm.provision "shell", name: "Managed nodes setup SSH", path: "provision/authorize-ctrl.sh"
 
       end
     end
