@@ -36,6 +36,7 @@ Vagrant.configure("2") do |config|
         vb.memory = options[:memory]
         vb.cpus = options[:cpus]
         vb.linked_clone = true # Creates a base extra VM, but saves memory and speed
+      end
       
       # Provision to allow the nodes to reach each other by their names including each other in /etc/hosts
       node.vm.provision "shell", name: "Add hosts to /etc/hosts", path:"provision/setup-hosts.sh", args: HOSTS_ARGS
@@ -44,7 +45,6 @@ Vagrant.configure("2") do |config|
         node.vm.provision "shell", name: "Ctrl node setup Ansible & SSH", path: "provision/boot-ctrl.sh"
       else
         node.vm.provision "shell", name: "Managed nodes setup SSH", path: "provision/authorize-ctrl.sh"
-
       end
     end
   end
