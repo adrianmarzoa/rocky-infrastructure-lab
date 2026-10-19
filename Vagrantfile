@@ -24,6 +24,8 @@ HOSTS_ARGS = MACHINES.map{|name, options| "#{options[:ip]} #{name}"}
 Vagrant.configure("2") do |config|
   config.vm.box = BOX
   config.vm.box_check_update = false
+  # Changes the mounted shared folder at the nodes without world write permissions for ansible to admit ansible.cfg
+  config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=755", "fmode=644"]
 
 # Configure each machine
   MACHINES.each do |name, options|
